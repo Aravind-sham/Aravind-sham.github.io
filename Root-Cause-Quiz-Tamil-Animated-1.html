@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>மூலகாரண கேள்வித்தாள்</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@500;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5E9;
+    --ink:#23291F;
+    --jade:#2E6B52;
+    --jade-light:#E3EFE7;
+    --gold:#C8932B;
+    --spleen:#C9802D;   --spleen-l:#FBEEDC;
+    --kidney:#A8404D;   --kidney-l:#FAE5E6;
+    --lung:#3578A0;     --lung-l:#DFF0F6;
+    --heart:#C13C5D;    --heart-l:#FCE2E9;
+    --liver:#6C57A6;    --liver-l:#EAE5F8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Noto Sans Tamil', sans-serif;
+    font-size:18px;
+    line-height:1.75;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Noto Serif Tamil', serif; }
+
+  /* ---------- decorative meridian svg behind hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:8vh 6vw 10vh;
+    background:
+      radial-gradient(ellipse 120% 80% at 50% -10%, #DCEAD9 0%, transparent 60%),
+      linear-gradient(180deg, #EFF2E4 0%, var(--cream) 55%);
+    overflow:hidden;
+  }
+  .meridian{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  .meridian path{
+    fill:none; stroke:var(--jade); stroke-width:1.4; opacity:0.35;
+    stroke-dasharray:2000; stroke-dashoffset:2000;
+    animation:draw 3.2s ease-out forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1.5px solid var(--jade); color:var(--jade);
+    border-radius:999px; padding:7px 20px; font-weight:600; font-size:0.85rem;
+    letter-spacing:0.04em;
+    opacity:0; transform:translateY(14px);
+    animation:riseIn 0.8s ease forwards 0.15s;
+    z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 8vw, 4.2rem);
+    font-weight:800;
+    color:var(--ink);
+    margin-top:0.6em;
+    line-height:1.18;
+    opacity:0; transform:translateY(20px);
+    animation:riseIn 0.9s ease forwards 0.35s;
+    z-index:2;
+  }
+  .hero .byline{
+    margin-top:0.7em; font-size:1.15rem; font-weight:600; color:var(--jade);
+    opacity:0; transform:translateY(16px);
+    animation:riseIn 0.9s ease forwards 0.55s;
+    z-index:2;
+  }
+  .hero .sub{
+    margin-top:1.1em; max-width:520px; color:#4B5043; font-size:1rem;
+    opacity:0; transform:translateY(16px);
+    animation:riseIn 0.9s ease forwards 0.72s;
+    z-index:2;
+  }
+  @keyframes riseIn{ to{opacity:1; transform:none;} }
+
+  .organ-orbit{
+    margin-top:3.2rem; display:flex; gap:18px; flex-wrap:wrap; justify-content:center; z-index:2;
+  }
+  .orb{
+    width:64px; height:64px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.7rem;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    opacity:0; transform:scale(0.4);
+    animation:popIn 0.6s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .orb:nth-child(1){ background:var(--spleen-l); animation-delay:0.9s; }
+  .orb:nth-child(2){ background:var(--kidney-l); animation-delay:1.02s; }
+  .orb:nth-child(3){ background:var(--lung-l); animation-delay:1.14s; }
+  .orb:nth-child(4){ background:var(--heart-l); animation-delay:1.26s; }
+  .orb:nth-child(5){ background:var(--liver-l); animation-delay:1.38s; }
+  @keyframes popIn{ to{opacity:1; transform:scale(1);} }
+  .orb{ animation-name: popIn, floaty; animation-duration:0.6s, 4.5s; animation-timing-function: cubic-bezier(.34,1.56,.64,1), ease-in-out; animation-iteration-count:1, infinite; animation-direction:normal, alternate; animation-fill-mode:forwards, none; }
+  @keyframes floaty{ from{ transform:translateY(0);} to{ transform:translateY(-9px);} }
+
+  .scroll-cue{
+    position:absolute; bottom:5vh; left:50%; transform:translateX(-50%);
+    font-size:0.8rem; color:#8A8F7E; letter-spacing:0.08em;
+    opacity:0; animation:riseIn 0.8s ease forwards 1.6s, bob 2s ease-in-out 2.4s infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,6px);} }
+
+  /* ---------- sections ---------- */
+  section.block{
+    max-width:760px; margin:0 auto; padding:5rem 6vw;
+  }
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  .block h2{
+    font-size:clamp(1.6rem,4.5vw,2.1rem); font-weight:800; color:var(--jade);
+    border-bottom:2px solid var(--jade); padding-bottom:0.5rem; margin-bottom:1.2rem;
+  }
+  .block p{ color:#3A3F32; margin-bottom:1rem; }
+  .italic-note{ font-style:italic; color:#5B6051; }
+
+  /* organ sections */
+  .organ{
+    background:#fff; border-radius:22px; padding:2.6rem 2rem 2.2rem;
+    box-shadow:0 10px 30px rgba(35,41,31,0.06);
+    margin:3.5rem auto;
+    border-top:6px solid var(--accent);
+  }
+  .organ-head{ display:flex; align-items:center; gap:18px; margin-bottom:1.6rem; }
+  .organ-head .icon{
+    width:64px; height:64px; border-radius:50%; background:var(--accent-l);
+    display:flex; align-items:center; justify-content:center; font-size:1.8rem; flex-shrink:0;
+  }
+  .organ-head h2{ border:none; padding:0; margin:0; color:var(--accent); font-size:1.55rem; }
+
+  .check-list{ list-style:none; }
+  .check-list li{
+    display:flex; align-items:flex-start; gap:14px;
+    padding:11px 6px; border-radius:10px; cursor:pointer;
+    user-select:none; transition:background 0.25s ease;
+    font-size:1.04rem;
+  }
+  .check-list li:hover{ background:var(--accent-l); }
+  .box{
+    box-sizing:border-box;
+    display:block;
+    width:22px; min-width:22px; max-width:22px;
+    height:22px; min-height:22px; max-height:22px;
+    border-radius:6px; border:2px solid var(--accent);
+    flex:0 0 22px;
+    margin-top:3px; position:relative; transition:background 0.25s ease, transform 0.15s ease;
+  }
+  .box::after{
+    content:""; position:absolute; left:4px; top:0px; width:7px; height:13px;
+    border-right:3px solid white; border-bottom:3px solid white;
+    transform:rotate(40deg) scale(0); transition:transform 0.22s cubic-bezier(.34,1.56,.64,1);
+  }
+  .check-list li.checked .box{ background:var(--accent); transform:scale(1.04); }
+  .check-list li.checked .box::after{ transform:rotate(40deg) scale(1); }
+
+  .related{
+    margin-top:1.4rem; font-size:0.95rem; color:var(--accent); background:var(--accent-l);
+    border-radius:12px; padding:0.9rem 1.1rem;
+  }
+  .related b{ font-weight:700; }
+
+  .score-row{
+    margin-top:1.6rem; display:flex; align-items:center; gap:16px;
+  }
+  .score-row .label{ font-weight:700; color:var(--ink); }
+  .ring-wrap{ position:relative; width:54px; height:54px; }
+  .ring-wrap svg{ transform:rotate(-90deg); }
+  .ring-bg{ fill:none; stroke:var(--accent-l); stroke-width:6; }
+  .ring-fg{ fill:none; stroke:var(--accent); stroke-width:6; stroke-linecap:round;
+    stroke-dasharray:150.8; stroke-dashoffset:150.8; transition:stroke-dashoffset 0.6s cubic-bezier(.34,1.2,.64,1); }
+  .ring-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; color:var(--accent); }
+
+  /* intro checklist (body does not lie) reused styling, jade theme */
+  .intro-list{ --accent:var(--jade); --accent-l:var(--jade-light); }
+
+  /* summary footer */
+  .summary{
+    background:var(--ink); color:#F4F1E6; border-radius:26px; padding:3rem 2rem;
+    margin:4rem auto 6rem; text-align:center;
+  }
+  .summary h2{ color:#F4F1E6; border:none; font-size:1.7rem; }
+  .summary .total-ring{ width:140px; height:140px; margin:1.6rem auto; position:relative; }
+  .summary .total-ring svg{ transform:rotate(-90deg); }
+  .summary .ring-bg2{ fill:none; stroke:#3A4034; stroke-width:10; }
+  .summary .ring-fg2{ fill:none; stroke:var(--gold); stroke-width:10; stroke-linecap:round;
+    stroke-dasharray:377; stroke-dashoffset:377; transition:stroke-dashoffset 0.9s cubic-bezier(.34,1.2,.64,1); }
+  .summary .total-num{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .summary .total-num .n{ font-size:2.2rem; font-weight:800; font-family:'Noto Serif Tamil',serif; }
+  .summary .total-num .d{ font-size:0.85rem; color:#C9CDBE; }
+  .summary .signature{ margin-top:1.6rem; font-size:1.1rem; font-weight:700; color:var(--gold); }
+  .summary .role{ font-size:0.9rem; color:#C9CDBE; margin-top:0.2rem; }
+
+  .rank-wrap{ margin:1.8rem 0; display:flex; flex-direction:column; gap:10px; text-align:left; }
+  .rank-card{
+    display:flex; align-items:center; gap:14px; background:#2E342A; border-radius:14px;
+    padding:12px 16px; opacity:0; transform:translateX(-10px);
+    transition:opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+  }
+  .rank-card.show{ opacity:1; transform:none; }
+  .rank-card .medal{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:0.95rem; font-family:'Noto Serif Tamil',serif;
+    color:#23291F;
+  }
+  .rank-card.p1 .medal{ background:#E8C468; }
+  .rank-card.p2 .medal{ background:#C9CDBE; }
+  .rank-card.p3 .medal{ background:#C8895A; }
+  .rank-card .info{ flex:1; }
+  .rank-card .tag{ font-size:0.72rem; letter-spacing:0.05em; color:#9CA08D; font-weight:600; }
+  .rank-card .name{ font-weight:700; font-size:1rem; color:#F4F1E6; font-family:'Noto Serif Tamil',serif; }
+  .rank-card .pct{ font-weight:700; font-size:0.95rem; color:#E8C468; }
+  .rank-empty{ color:#9CA08D; font-size:0.92rem; text-align:center; padding:0.5rem 0; }
+  .reset-btn{
+    margin-top:1.8rem; background:none; border:1.5px solid var(--gold); color:var(--gold);
+    padding:10px 26px; border-radius:999px; font-family:'Noto Sans Tamil',sans-serif; font-size:0.95rem;
+    font-weight:600; cursor:pointer; transition:background 0.2s ease, color 0.2s ease;
+  }
+  .reset-btn:hover{ background:var(--gold); color:var(--ink); }
+
+  @media (max-width:480px){
+    body{ font-size:16.5px; }
+    .organ{ padding:2rem 1.3rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  /* ---------- mobile number gate ---------- */
+  .gate{
+    position:fixed; inset:0; z-index:999;
+    background:linear-gradient(160deg,#2E6B52 0%, #23291F 100%);
+    display:flex; align-items:center; justify-content:center;
+    padding:6vw;
+  }
+  .gate.hidden{ display:none; }
+  body.locked{ overflow:hidden; }
+  .gate-card{
+    background:#FBF5E9; border-radius:22px; padding:2.2rem 1.8rem;
+    max-width:400px; width:100%; text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+    opacity:0; transform:translateY(16px) scale(0.97);
+    animation:gateIn 0.6s ease forwards 0.1s;
+    max-height:88vh; overflow-y:auto;
+  }
+  @keyframes gateIn{ to{opacity:1; transform:none;} }
+  .gate-icon{ font-size:2.4rem; margin-bottom:0.6rem; }
+  .gate-card h2{ font-size:1.4rem; color:var(--ink); margin-bottom:0.6rem; }
+  .gate-card p{ color:#5B6051; font-size:0.95rem; margin-bottom:1.4rem; }
+  .gate-card input{
+    width:100%; padding:13px 16px; border-radius:12px; border:2px solid #D8D2BF;
+    font-family:'Noto Sans Tamil', sans-serif; font-size:1.05rem; letter-spacing:0.04em;
+    outline:none; transition:border-color 0.2s ease; text-align:center;
+    margin-bottom:12px;
+  }
+  .gate-card input:focus{ border-color:var(--jade); }
+  .gate-card input.invalid{ border-color:var(--kidney); }
+  .gate-error{
+    color:var(--kidney); font-size:0.85rem; margin-top:-4px; margin-bottom:8px; height:0;
+    opacity:0; overflow:hidden; transition:opacity 0.2s ease;
+  }
+  .gate-error.show{ opacity:1; height:auto; }
+  .gate-btn{
+    margin-top:0.4rem; width:100%; padding:14px; border:none; border-radius:999px;
+    background:var(--jade); color:#fff; font-family:'Noto Sans Tamil',sans-serif;
+    font-size:1.05rem; font-weight:700; cursor:pointer; transition:opacity 0.2s ease, transform 0.15s ease;
+  }
+  .gate-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .gate-btn:not(:disabled):active{ transform:scale(0.97); }
+
+  /* submit section in summary */
+  .submit-wrap{ margin-top:1.8rem; padding-top:1.6rem; border-top:1px solid #3A4034; }
+  .submit-wrap .reg-num{ color:#C9CDBE; font-size:0.9rem; margin-bottom:0.9rem; }
+  .submit-wrap .reg-num b{ color:#F4F1E6; letter-spacing:0.04em; }
+  .submit-btn{
+    background:var(--gold); border:none; color:#23291F; font-weight:700;
+    padding:13px 30px; border-radius:999px; font-family:'Noto Sans Tamil',sans-serif;
+    font-size:1rem; cursor:pointer; transition:transform 0.15s ease, opacity 0.2s ease;
+  }
+  .submit-btn:active{ transform:scale(0.97); }
+  .submit-btn:disabled{ opacity:0.5; cursor:not-allowed; }
+  .submit-confirm{
+    margin-top:1rem; color:#9CE0B5; font-size:0.92rem; opacity:0; transition:opacity 0.4s ease;
+  }
+  .submit-confirm.show{ opacity:1; }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="ic-spleen" viewBox="0 0 64 64">
+    <path d="M14 36 C12 22, 24 12, 36 14 C50 16, 54 30, 48 42 C42 54, 24 54, 16 46 C12 42, 14 40, 14 36 Z" fill="var(--accent)"/>
+    <path d="M22 30 C26 26, 34 26, 38 30" stroke="rgba(255,255,255,0.55)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="ic-kidney" viewBox="0 0 64 64">
+    <path d="M40 12 C52 12, 56 24, 52 34 C49 41, 53 46, 48 52 C42 58, 30 56, 26 48 C23 42, 27 40, 26 33 C25 24, 28 12, 40 12 Z" fill="var(--accent)"/>
+    <circle cx="34" cy="33" r="4.5" fill="rgba(255,255,255,0.6)"/>
+  </symbol>
+  <symbol id="ic-lung" viewBox="0 0 64 64">
+    <path d="M30 10 L30 26 C24 24, 14 28, 12 40 C10 50, 16 56, 22 52 C27 49, 28 40, 28 34 L28 26" fill="var(--accent)"/>
+    <path d="M34 10 L34 26 C40 24, 50 28, 52 40 C54 50, 48 56, 42 52 C37 49, 36 40, 36 34 L36 26" fill="var(--accent)"/>
+    <rect x="30" y="8" width="4" height="14" rx="2" fill="var(--accent)"/>
+  </symbol>
+  <symbol id="ic-heart" viewBox="0 0 64 64">
+    <path d="M32 52 C14 40, 8 28, 14 19 C19 11, 30 12, 32 22 C34 12, 45 11, 50 19 C56 28, 50 40, 32 52 Z" fill="var(--accent)"/>
+  </symbol>
+  <symbol id="ic-liver" viewBox="0 0 64 64">
+    <path d="M12 28 C14 18, 26 12, 38 14 C50 16, 56 24, 52 34 C49 42, 40 40, 36 44 C30 50, 18 48, 14 40 C11 34, 11 32, 12 28 Z" fill="var(--accent)"/>
+    <path d="M20 26 C26 23, 34 23, 40 27" stroke="rgba(255,255,255,0.5)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+
+<!-- HERO -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-icon">📋</div>
+    <h2>தொடங்குவதற்கு முன்...</h2>
+    <p>உங்கள் பெயரை உள்ளிடவும். இது உங்கள் முடிவு அறிக்கையில் தோன்றும்.</p>
+    <input type="text" id="nameInput" placeholder="உங்கள் பெயர்" autocomplete="name">
+    <div class="gate-error" id="gateError">தயவுசெய்து உங்கள் பெயரை உள்ளிடவும்.</div>
+    <button class="gate-btn" id="gateBtn" disabled>தொடரவும்</button>
+  </div>
+</div>
+
+<div class="hero">
+  <svg class="meridian" viewBox="0 0 800 800" preserveAspectRatio="none">
+    <path d="M 80 650 C 200 500, 150 300, 300 250 S 500 350, 420 180 S 600 80, 700 150" />
+    <path d="M 700 700 C 550 600, 600 450, 450 420 S 250 470, 280 300 S 120 200, 100 100" />
+  </svg>
+  <div class="eyebrow">இலவச வழிகாட்டி</div>
+  <h1>மூலகாரண<br>கேள்வித்தாள்</h1>
+  <div class="byline">Acupuncturist அரவிந்த்குமார் S</div>
+  <p class="sub">ஒவ்வொரு பிரிவிலும் உங்களுக்குப் பொருந்தும் அறிகுறிகளைத் தொடவும். இறுதியில், எந்த உறுப்பில் அதிகம் கவனம் தேவை என்பதை உங்கள் மொத்த மதிப்பெண் காட்டும்.</p>
+  <div class="organ-orbit">
+    <div class="orb" style="--accent:var(--spleen);"><svg width="34" height="34"><use href="#ic-spleen"/></svg></div>
+    <div class="orb" style="--accent:var(--kidney);"><svg width="34" height="34"><use href="#ic-kidney"/></svg></div>
+    <div class="orb" style="--accent:var(--lung);"><svg width="34" height="34"><use href="#ic-lung"/></svg></div>
+    <div class="orb" style="--accent:var(--heart);"><svg width="34" height="34"><use href="#ic-heart"/></svg></div>
+    <div class="orb" style="--accent:var(--liver);"><svg width="34" height="34"><use href="#ic-liver"/></svg></div>
+  </div>
+  <div class="scroll-cue">⌄ &nbsp; கீழே உருட்டவும்</div>
+</div>
+
+<!-- HOW TO USE -->
+<section class="block reveal">
+  <h2>இந்த வழிகாட்டியை எவ்வாறு பயன்படுத்துவது</h2>
+  <p>ஆயிரக்கணக்கான ஆண்டுகளாக பாரம்பரியமாக இணைக்கப்பட்ட உறுப்பு அமைப்புகளாக ஒவ்வொரு பிரிவையும் பிரிக்க முயற்சித்துள்ளேன். உங்களுக்குப் பொருந்தும் அறிகுறிகளைத் தொட்டு குறியிடுங்கள் — ஒவ்வொரு பிரிவின் வட்டமும் தானாக நிரம்பும். இறுதியில், நீங்கள் அதிகம் கவனம் செலுத்த வேண்டிய பகுதிகளை உங்களாலேயே பார்க்க முடியும்.</p>
+</section>
+
+<!-- BODY DOES NOT LIE -->
+<section class="block reveal">
+  <h2>உடல் பொய் சொல்லாது</h2>
+  <p class="italic-note">உடல் எப்போதும் ஒரு பிரச்சினை இருப்பதை உங்களுக்குத் தெரிவிக்க நுட்பமான சமிக்ஞைகளை அனுப்புகிறது — நீங்கள் கவனிக்கிறீர்களா?</p>
+  <ul class="check-list intro-list" id="list-intro">
+    <li><div class="box"></div><div>ஒற்றைத் தலைவலி (Migraines)</div></li>
+    <li><div class="box"></div><div>தாடை மூட்டுப் பிரச்சினை – TMJ</div></li>
+    <li><div class="box"></div><div>இதயத் துடிப்பு / படபடப்பு</div></li>
+    <li><div class="box"></div><div>பித்தப்பை வண்டல்</div></li>
+    <li><div class="box"></div><div>சிறுநீர்க்குழாய் தொற்று (UTI)</div></li>
+    <li><div class="box"></div><div>ஆண்மை இயலாமை</div></li>
+    <li><div class="box"></div><div>மரத்துப்போதல்</div></li>
+    <li><div class="box"></div><div>நீரிழிவு நோய்</div></li>
+  </ul>
+</section>
+
+<!-- SPLEEN -->
+<section class="block reveal">
+  <div class="organ" style="--accent:var(--spleen); --accent-l:var(--spleen-l);">
+    <div class="organ-head"><div class="icon"><svg width="36" height="36"><use href="#ic-spleen"/></svg></div><h2>மண்ணீரல்-கணையம் (Spleen-Pancreas)</h2></div>
+    <ul class="check-list" data-organ="spleen">
+      <li><div class="box"></div><div>உணவுக்குப் பிறகு வயிற்றுப் பெருத்தல் அல்லது 'உணவுக் குழந்தை' உணர்வு</div></li>
+      <li><div class="box"></div><div>தளர்வான மலம்</div></li>
+      <li><div class="box"></div><div>குறைந்த பசி, அல்லது தொடர்ந்து சாப்பிட்டால் மட்டுமே நிரம்பும் ஆற்றல்</div></li>
+      <li><div class="box"></div><div>வெளிறிய தோற்றம்</div></li>
+      <li><div class="box"></div><div>திட்டமிடாத எடை இழப்பு</div></li>
+      <li><div class="box"></div><div>சோர்வு</div></li>
+      <li><div class="box"></div><div>உடல் அல்லது கைகால்களில் கனத்தன்மை</div></li>
+      <li><div class="box"></div><div>மலத்தில் ஜீரணமாகாத உணவு</div></li>
+      <li><div class="box"></div><div>நீர்க்கட்டு (எடிமா)</div></li>
+      <li><div class="box"></div><div>யோனி வெளியேற்றம் அல்லது ஈஸ்ட் தொற்றுப் பிரச்சினைகள்</div></li>
+      <li><div class="box"></div><div>குமட்டல்</div></li>
+      <li><div class="box"></div><div>நாள்பட்ட தொண்டை செருமல்</div></li>
+    </ul>
+    <p class="related"><b>தொடர்புடைய உறுப்புகள்:</b> நுரையீரல் மற்றும் மண்ணீரல்-கணையம். இவற்றில் பெரும்பாலான அறிகுறிகளை நீங்கள் தேர்ந்தெடுத்திருந்தால், தொடர்புடைய இரைப்பை மற்றும் நுரையீரல் செயல்பாட்டிலும் பிரச்சினைகள் இருக்கலாம்.</p>
+    <div class="score-row">
+      <div class="ring-wrap"><svg width="54" height="54"><circle class="ring-bg" cx="27" cy="27" r="24"/><circle class="ring-fg" data-ring="spleen" cx="27" cy="27" r="24"/></svg><div class="ring-num" data-num="spleen">0/12</div></div>
+      <div class="label">உங்கள் மதிப்பெண்</div>
+    </div>
+  </div>
+</section>
+
+<!-- KIDNEY -->
+<section class="block reveal">
+  <div class="organ" style="--accent:var(--kidney); --accent-l:var(--kidney-l);">
+    <div class="organ-head"><div class="icon"><svg width="36" height="36"><use href="#ic-kidney"/></svg></div><h2>சிறுநீரகம் (Kidney)</h2></div>
+    <ul class="check-list" data-organ="kidney">
+      <li><div class="box"></div><div>தெளிவான சிறுநீர் அடிக்கடி வெளியேறுதல்</div></li>
+      <li><div class="box"></div><div>பலவீனமான சிறுநீர் ஓட்டம், சொட்டுதல்</div></li>
+      <li><div class="box"></div><div>சிறுநீர் கட்டுப்பாடின்மை</div></li>
+      <li><div class="box"></div><div>இரவு நேர சிறுநீர் கழித்தல் (நொக்டூரியா)</div></li>
+      <li><div class="box"></div><div>முன்கூட்டிய விந்து வெளியேற்றம்</div></li>
+      <li><div class="box"></div><div>பாலியல் செயலிழப்பு</div></li>
+      <li><div class="box"></div><div>யோனி வெளியேற்றம்</div></li>
+      <li><div class="box"></div><div>கருப்பை சறுக்கல்</div></li>
+      <li><div class="box"></div><div>ஆண்மை இயலாமை</div></li>
+      <li><div class="box"></div><div>மலட்டுத்தன்மை</div></li>
+      <li><div class="box"></div><div>தலைச்சுற்றல்</div></li>
+      <li><div class="box"></div><div>காது ஓசை (டின்னிட்டஸ்)</div></li>
+      <li><div class="box"></div><div>இரவு நேர தன்னிச்சை விந்து வெளியேற்றம்</div></li>
+      <li><div class="box"></div><div>தூக்கமின்மை</div></li>
+      <li><div class="box"></div><div>வெப்ப அலைகள் மற்றும் இரவு வியர்வை</div></li>
+      <li><div class="box"></div><div>தன்னெதிர்ப்பு நோய்</div></li>
+      <li><div class="box"></div><div>நாள்பட்ட சோர்வு நோய்க்குறி</div></li>
+      <li><div class="box"></div><div>கடுமையான மனச்சோர்வு</div></li>
+    </ul>
+    <p class="related"><b>தொடர்புடைய உறுப்புகள்:</b> இதயம் மற்றும் சிறுநீரகம். இவற்றில் பெரும்பாலான அறிகுறிகளை நீங்கள் தேர்ந்தெடுத்திருந்தால், தொடர்புடைய இதயம் மற்றும் சிறுநீர்ப்பையிலும் பிரச்சினைகள் இருக்கலாம்.</p>
+    <div class="score-row">
+      <div class="ring-wrap"><svg width="54" height="54"><circle class="ring-bg" cx="27" cy="27" r="24"/><circle class="ring-fg" data-ring="kidney" cx="27" cy="27" r="24"/></svg><div class="ring-num" data-num="kidney">0/18</div></div>
+      <div class="label">உங்கள் மதிப்பெண்</div>
+    </div>
+  </div>
+</section>
+
+<!-- LUNG -->
+<section class="block reveal">
+  <div class="organ" style="--accent:var(--lung); --accent-l:var(--lung-l);">
+    <div class="organ-head"><div class="icon"><svg width="36" height="36"><use href="#ic-lung"/></svg></div><h2>நுரையீரல் (Lung)</h2></div>
+    <ul class="check-list" data-organ="lung">
+      <li><div class="box"></div><div>கபத்துடன் கூடிய நாள்பட்ட இருமல்</div></li>
+      <li><div class="box"></div><div>மார்பில் நிறைவு அல்லது அடைப்பு உணர்வு</div></li>
+      <li><div class="box"></div><div>மூச்சுத் திணறல், விசில் ஓசை</div></li>
+      <li><div class="box"></div><div>வறண்ட இருமல் அல்லது வருடாந்திர மூச்சுக்குழாய் அழற்சி</div></li>
+      <li><div class="box"></div><div>கரகரப்பான குரல்</div></li>
+      <li><div class="box"></div><div>எளிதில் சளி பிடிக்கும் தன்மை</div></li>
+      <li><div class="box"></div><div>பேச விருப்பமின்மை</div></li>
+      <li><div class="box"></div><div>தன்னிச்சையான வியர்வை</div></li>
+      <li><div class="box"></div><div>சோர்வு</div></li>
+      <li><div class="box"></div><div>குளிர் அல்லது 'காற்று' வெறுப்பு (குளிர்சாதனம், காற்றோட்டம்)</div></li>
+      <li><div class="box"></div><div>நாள்பட்ட மூக்கு ஒழுகுதல்</div></li>
+    </ul>
+    <p class="related"><b>தொடர்புடைய உறுப்புகள்:</b> நுரையீரல் மற்றும் மண்ணீரல். இவை இரண்டும் சளி சவ்வுடன் (mucosa) தொடர்புடையவை — பெருங்குடல் மற்றும் மண்ணீரல்-கணைய செயல்பாட்டையும் பாதிக்கலாம்.</p>
+    <div class="score-row">
+      <div class="ring-wrap"><svg width="54" height="54"><circle class="ring-bg" cx="27" cy="27" r="24"/><circle class="ring-fg" data-ring="lung" cx="27" cy="27" r="24"/></svg><div class="ring-num" data-num="lung">0/11</div></div>
+      <div class="label">உங்கள் மதிப்பெண்</div>
+    </div>
+  </div>
+</section>
+
+<!-- HEART -->
+<section class="block reveal">
+  <div class="organ" style="--accent:var(--heart); --accent-l:var(--heart-l);">
+    <div class="organ-head"><div class="icon"><svg width="36" height="36"><use href="#ic-heart"/></svg></div><h2>இதயம் (Heart)</h2></div>
+    <ul class="check-list" data-organ="heart">
+      <li><div class="box"></div><div>இதயத் துடிப்பு / படபடப்பு</div></li>
+      <li><div class="box"></div><div>அதிகரித்த அல்லது ஒழுங்கற்ற இதயத் துடிப்பு வீதம்</div></li>
+      <li><div class="box"></div><div>தன்னிச்சையான வியர்வை</div></li>
+      <li><div class="box"></div><div>உடல் உழைப்பின்போது மூச்சுத் திணறல் அல்லது மார்பு அசௌகரியம்</div></li>
+      <li><div class="box"></div><div>தலைச்சுற்றல்</div></li>
+      <li><div class="box"></div><div>தூக்கமின்மை</div></li>
+      <li><div class="box"></div><div>கனவு குலைந்த தூக்கம்</div></li>
+      <li><div class="box"></div><div>மோசமான நினைவாற்றல்</div></li>
+      <li><div class="box"></div><div>எளிதில் பதற்றமடைதல்</div></li>
+      <li><div class="box"></div><div>பீதி தாக்குதல்கள்</div></li>
+      <li><div class="box"></div><div>மார்பு வலி</div></li>
+    </ul>
+    <p class="related"><b>தொடர்புடைய உறுப்புகள்:</b> இதயம் மற்றும் சிறுநீரகம். இவற்றில் பெரும்பாலான அறிகுறிகளை நீங்கள் தேர்ந்தெடுத்திருந்தால், தொடர்புடைய சிறுநீரகம் மற்றும் சிறுகுடலிலும் பிரச்சினைகள் இருக்கலாம்.</p>
+    <div class="score-row">
+      <div class="ring-wrap"><svg width="54" height="54"><circle class="ring-bg" cx="27" cy="27" r="24"/><circle class="ring-fg" data-ring="heart" cx="27" cy="27" r="24"/></svg><div class="ring-num" data-num="heart">0/11</div></div>
+      <div class="label">உங்கள் மதிப்பெண்</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVER -->
+<section class="block reveal">
+  <div class="organ" style="--accent:var(--liver); --accent-l:var(--liver-l);">
+    <div class="organ-head"><div class="icon"><svg width="36" height="36"><use href="#ic-liver"/></svg></div><h2>கல்லீரல் (மற்றும் தொடர்புடைய பித்தப்பை)</h2></div>
+    <ul class="check-list" data-organ="liver">
+      <li><div class="box"></div><div>விலா எலும்பு அல்லது மார்பில் அசௌகரியம் அல்லது அடைப்பு உணர்வு</div></li>
+      <li><div class="box"></div><div>தலைவலி (முக்கியமாக நெற்றிப் பகுதியில்)</div></li>
+      <li><div class="box"></div><div>ஒற்றைத் தலைவலி (சில வகைகள் — அனைத்தும் இல்லை)</div></li>
+      <li><div class="box"></div><div>மார்பக மென்மை</div></li>
+      <li><div class="box"></div><div>ஒழுங்கற்ற மாதவிடாய் அல்லது மாதவிடாய் வலி</div></li>
+      <li><div class="box"></div><div>நாள்பட்ட பெருமூச்சு</div></li>
+      <li><div class="box"></div><div>அமில எதிர்ப்பு (Acid reflux)</div></li>
+      <li><div class="box"></div><div>மேல்வயிறு மற்றும் வயிற்றுப் பெருக்கம்</div></li>
+      <li><div class="box"></div><div>ஏப்பம் மற்றும் மோசமான பசி</div></li>
+      <li><div class="box"></div><div>குமட்டல்</div></li>
+      <li><div class="box"></div><div>மாறுபடும் மல வடிவம்</div></li>
+      <li><div class="box"></div><div>கண் அல்லது நெற்றியில் வலி</div></li>
+      <li><div class="box"></div><div>எரிச்சல், எளிதில் கோபம்</div></li>
+      <li><div class="box"></div><div>தோல் அரிப்பு / சொறி (தோல் அல்லது பிறப்புறுப்பு)</div></li>
+      <li><div class="box"></div><div>கண் முன் மிதவைகள் (Floaters)</div></li>
+      <li><div class="box"></div><div>தசை பிடிப்பு</div></li>
+      <li><div class="box"></div><div>நாள்பட்ட சைனஸ் தொற்றுகள்</div></li>
+      <li><div class="box"></div><div>நாள்பட்ட சிறுநீர்க்குழாய் தொற்றுகள்</div></li>
+    </ul>
+    <p class="related"><b>தொடர்புடைய உறுப்புகள்:</b> பித்தப்பை மற்றும் ட்ரிபிள் வார்மர். இவற்றில் பெரும்பாலான அறிகுறிகளை நீங்கள் தேர்ந்தெடுத்திருந்தால், தொடர்புடைய பித்தப்பை மற்றும் இரைப்பை, அல்லது பெரிகார்டியத்திலும் பிரச்சினைகள் இருக்கலாம்.</p>
+    <div class="score-row">
+      <div class="ring-wrap"><svg width="54" height="54"><circle class="ring-bg" cx="27" cy="27" r="24"/><circle class="ring-fg" data-ring="liver" cx="27" cy="27" r="24"/></svg><div class="ring-num" data-num="liver">0/18</div></div>
+      <div class="label">உங்கள் மதிப்பெண்</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="block">
+  <div class="summary reveal">
+    <h2>உங்கள் மொத்த முடிவு</h2>
+    <div class="total-ring">
+      <svg width="140" height="140"><circle class="ring-bg2" cx="70" cy="70" r="60"/><circle class="ring-fg2" id="totalRing" cx="70" cy="70" r="60"/></svg>
+      <div class="total-num"><div class="n" id="totalNum">0</div><div class="d">/ 70 அறிகுறிகள்</div></div>
+    </div>
+    <p style="color:#C9CDBE; max-width:440px; margin:0 auto;">அதிக மதிப்பெண் கொண்ட உறுப்பு பிரிவே உங்கள் மூலகாரணமாக இருக்கக்கூடும்.</p>
+
+    <div class="rank-wrap" id="rankWrap"></div>
+
+    <div class="signature">Acupuncturist அரவிந்த்குமார் S</div>
+    <button class="reset-btn" id="resetBtn">மீண்டும் தொடங்கு</button>
+
+    <div class="submit-wrap">
+      <div class="reg-num">நோயாளி பெயர்: <b id="regNumDisplay">—</b></div>
+      <button class="submit-btn" id="submitBtn">📄 அறிக்கையை பதிவிறக்கு</button>
+      <div class="submit-confirm" id="submitConfirm"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ---------- gate (patient name) ----------
+  let patientName = '';
+  const gate = document.getElementById('gate');
+  const nameInput = document.getElementById('nameInput');
+  const gateBtn = document.getElementById('gateBtn');
+  const gateError = document.getElementById('gateError');
+
+  document.body.classList.add('locked');
+
+  nameInput.addEventListener('input', ()=>{
+    gateBtn.disabled = nameInput.value.trim().length < 2;
+    nameInput.classList.remove('invalid');
+    gateError.classList.remove('show');
+  });
+
+  gateBtn.addEventListener('click', ()=>{
+    if(nameInput.value.trim().length < 2){
+      nameInput.classList.add('invalid');
+      gateError.classList.add('show');
+      return;
+    }
+    patientName = nameInput.value.trim();
+    document.getElementById('regNumDisplay').textContent = patientName;
+    gate.classList.add('hidden');
+    document.body.classList.remove('locked');
+  });
+
+  nameInput.addEventListener('keydown', e=>{
+    if(e.key==='Enter' && !gateBtn.disabled) gateBtn.click();
+  });
+
+  // ---------- compute ranked groups (ties together) ----------
+  function computeRankedGroups(){
+    const data = Object.keys(ORGAN_NAMES).map(key=>{
+      const list = document.querySelector(`.check-list[data-organ="${key}"]`);
+      const checked = list.querySelectorAll('li.checked').length;
+      const total = list.querySelectorAll('li').length;
+      return { key, name: ORGAN_NAMES[key], checked, total };
+    }).filter(d => d.checked > 0);
+    data.sort((a,b) => b.checked - a.checked);
+    const groups = [];
+    data.forEach(d=>{
+      const last = groups[groups.length-1];
+      if(last && last.checked === d.checked) last.names.push(d.name);
+      else groups.push({ checked: d.checked, names: [d.name] });
+    });
+    return groups;
+  }
+
+  // ---------- populate + download PDF ----------
+  document.getElementById('submitBtn').addEventListener('click', async ()=>{
+    const confirmEl = document.getElementById('submitConfirm');
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'தயாரிக்கிறது...';
+    confirmEl.classList.remove('show');
+
+    try{
+      const groups = computeRankedGroups();
+      const total = Object.keys(ORGAN_NAMES).reduce((s,k)=>{
+        return s + document.querySelector(`.check-list[data-organ="${k}"]`).querySelectorAll('li.checked').length;
+      },0);
+
+      // populate report div
+      const rpt = document.getElementById('pdf-report');
+      document.getElementById('pdf-name').textContent = patientName;
+      document.getElementById('pdf-date').textContent = new Date().toLocaleDateString('ta-IN',{year:'numeric',month:'long',day:'numeric'});
+      document.getElementById('pdf-total').textContent = total;
+
+      // ranks
+      const RLABELS = ['முதன்மை பாதிப்பு','இரண்டாம் நிலை பாதிப்பு','மூன்றாம் நிலை பாதிப்பு'];
+      const RCOLORS = ['#C8932B','#9CA08D','#C8895A'];
+      const ranksEl = document.getElementById('pdf-ranks');
+      ranksEl.innerHTML = groups.slice(0,3).map((g,i)=>`
+        <div style="display:flex; align-items:center; gap:14px; background:#F9F7F2; border-radius:10px; padding:12px 16px; border-left:4px solid ${RCOLORS[i]};">
+          <div style="width:28px; height:28px; border-radius:50%; background:${RCOLORS[i]}; color:#fff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${i+1}</div>
+          <div style="flex:1;">
+            <div style="font-size:10px; color:#9CA08D; font-weight:600;">${RLABELS[i]}</div>
+            <div style="font-weight:700; font-size:13px;">${g.names.join(' & ')}</div>
+          </div>
+          <div style="font-weight:700; font-size:13px; color:${RCOLORS[i]};">${g.checked} மதிப்பெண்</div>
+        </div>`).join('');
+
+      // scores table
+      const tbody = document.getElementById('pdf-tbody');
+      const allData = Object.keys(ORGAN_NAMES).map(key=>{
+        const list = document.querySelector(`.check-list[data-organ="${key}"]`);
+        const checked = list.querySelectorAll('li.checked').length;
+        const total2 = list.querySelectorAll('li').length;
+        return { name: ORGAN_NAMES[key], checked, total: total2 };
+      }).sort((a,b)=>b.checked-a.checked);
+      tbody.innerHTML = allData.map((d,i)=>`
+        <tr style="background:${i%2===0?'#FAFAFA':'#fff'};">
+          <td style="padding:9px 14px; font-weight:${d.checked>0?'600':'400'};">${d.name}</td>
+          <td style="padding:9px 14px; text-align:center; font-weight:700; color:${d.checked>0?'#2E6B52':'#C9CDBE'};">${d.checked}</td>
+          <td style="padding:9px 14px; text-align:center; color:#9CA08D;">${d.total}</td>
+        </tr>`).join('');
+
+      // show report, capture, hide
+      rpt.style.display = 'block';
+      await new Promise(r=>setTimeout(r,300));
+
+      const canvas = await html2canvas(rpt, { scale:2, useCORS:true, backgroundColor:'#ffffff' });
+      rpt.style.display = 'none';
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ unit:'px', format:'a4', orientation:'portrait' });
+      const pw = pdf.internal.pageSize.getWidth();
+      const ph = pdf.internal.pageSize.getHeight();
+      const ratio = canvas.width / canvas.height;
+      let iw = pw, ih = pw / ratio;
+      if(ih > ph){ ih = ph; iw = ph * ratio; }
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, iw, ih);
+      pdf.save(`${patientName}_RootCause_Report.pdf`);
+
+      confirmEl.textContent = '✓ அறிக்கை பதிவிறக்கப்பட்டது!';
+      confirmEl.style.color = '#9CE0B5';
+      confirmEl.classList.add('show');
+    } catch(err){
+      confirmEl.textContent = '✗ PDF உருவாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.';
+      confirmEl.style.color = '#F5A0A0';
+      confirmEl.classList.add('show');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '📄 அறிக்கையை பதிவிறக்கு';
+    }
+  });
+
+  // scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.12});
+  reveals.forEach(r=>io.observe(r));
+
+  // checklist interactivity
+  const RING_CIRC = 2*Math.PI*24;
+  const TOTAL_RING_CIRC = 2*Math.PI*60;
+  document.querySelectorAll('.ring-fg').forEach(c=>{ c.style.strokeDasharray = RING_CIRC; c.style.strokeDashoffset = RING_CIRC; });
+  document.getElementById('totalRing').style.strokeDasharray = TOTAL_RING_CIRC;
+  document.getElementById('totalRing').style.strokeDashoffset = TOTAL_RING_CIRC;
+
+  function updateOrgan(organ){
+    const list = document.querySelector(`.check-list[data-organ="${organ}"]`);
+    const items = list.querySelectorAll('li');
+    const checked = list.querySelectorAll('li.checked').length;
+    const total = items.length;
+    const ring = document.querySelector(`.ring-fg[data-ring="${organ}"]`);
+    const num = document.querySelector(`.ring-num[data-num="${organ}"]`);
+    const pct = checked/total;
+    ring.style.strokeDashoffset = RING_CIRC * (1-pct);
+    num.textContent = `${checked}/${total}`;
+    updateTotal();
+  }
+
+  const ORGAN_NAMES = {
+    spleen: 'மண்ணீரல்-கணையம்',
+    kidney: 'சிறுநீரகம்',
+    lung: 'நுரையீரல்',
+    heart: 'இதயம்',
+    liver: 'கல்லீரல்'
+  };
+  const RANK_LABELS = ['முதன்மை பாதிப்பு', 'இரண்டாம் நிலை பாதிப்பு', 'மூன்றாம் நிலை பாதிப்பு'];
+
+  function updateRanking(){
+    const wrap = document.getElementById('rankWrap');
+    const data = Object.keys(ORGAN_NAMES).map(key=>{
+      const list = document.querySelector(`.check-list[data-organ="${key}"]`);
+      const checked = list.querySelectorAll('li.checked').length;
+      const total = list.querySelectorAll('li').length;
+      return { key, name: ORGAN_NAMES[key], checked, total };
+    }).filter(d => d.checked > 0);
+
+    if(!data.length){
+      wrap.innerHTML = `<div class="rank-empty">அறிகுறிகளைத் தேர்ந்தெடுக்கும்போது, மிகுதியாகப் பாதிக்கப்பட்ட உறுப்புகள் இங்கே தோன்றும்.</div>`;
+      return;
+    }
+
+    // sort descending by count, then group tied scores together
+    data.sort((a,b) => b.checked - a.checked);
+    const groups = [];
+    data.forEach(d=>{
+      const last = groups[groups.length-1];
+      if(last && last.checked === d.checked){
+        last.names.push(d.name);
+      } else {
+        groups.push({ checked: d.checked, names: [d.name] });
+      }
+    });
+
+    const MEDALS = ['p1','p2','p3'];
+    const NUMS   = ['1','2','3'];
+
+    wrap.innerHTML = groups.slice(0,3).map((grp,i)=>`
+      <div class="rank-card ${MEDALS[i]}">
+        <div class="medal">${NUMS[i]}</div>
+        <div class="info">
+          <div class="tag">${RANK_LABELS[i]}</div>
+          <div class="name">${grp.names.join(' & ')}</div>
+        </div>
+        <div class="pct">${grp.checked} மதிப்பெண்</div>
+      </div>
+    `).join('');
+
+    requestAnimationFrame(()=>{
+      wrap.querySelectorAll('.rank-card').forEach((el,i)=>{
+        setTimeout(()=> el.classList.add('show'), i*120);
+      });
+    });
+  }
+
+  function updateTotal(){
+    let checked = 0, total = 0;
+    document.querySelectorAll('.check-list[data-organ] li').forEach(li=>{
+      total++; if(li.classList.contains('checked')) checked++;
+    });
+    document.getElementById('totalNum').textContent = checked;
+    const pct = total? checked/total : 0;
+    document.getElementById('totalRing').style.strokeDashoffset = TOTAL_RING_CIRC*(1-pct);
+    updateRanking();
+  }
+
+  document.querySelectorAll('.check-list li').forEach(li=>{
+    li.addEventListener('click', ()=>{
+      li.classList.toggle('checked');
+      const list = li.closest('.check-list');
+      const organ = list.getAttribute('data-organ');
+      if(organ) updateOrgan(organ);
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    document.querySelectorAll('.check-list[data-organ] li.checked').forEach(li=>li.classList.remove('checked'));
+    document.querySelectorAll('[data-organ]').forEach(list=>{
+      const organ = list.getAttribute('data-organ');
+      if(organ) updateOrgan(organ);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  updateRanking();
+</script>
+<!-- PDF REPORT (hidden, captured by html2canvas) -->
+<div id="pdf-report" style="display:none; position:fixed; left:-9999px; top:0; width:595px; background:#fff; font-family:'Noto Sans Tamil',sans-serif; color:#1F2937;">
+  <div style="background:linear-gradient(135deg,#2E6B52,#1a3d2f); padding:36px 40px 28px; color:#fff;">
+    <div style="font-size:11px; letter-spacing:2px; opacity:0.75; margin-bottom:6px;">மூலகாரண கேள்வித்தாள் — முடிவு அறிக்கை</div>
+    <div style="font-size:26px; font-weight:800; font-family:'Noto Serif Tamil',serif;">Root Cause Quiz Report</div>
+    <div style="margin-top:18px; display:flex; justify-content:space-between; font-size:12px; opacity:0.85;">
+      <span>நோயாளி: <b id="pdf-name" style="color:#A8E6C0;"></b></span>
+      <span id="pdf-date"></span>
+    </div>
+  </div>
+
+  <div style="padding:30px 40px;">
+    <!-- total score -->
+    <div style="display:flex; align-items:center; gap:20px; background:#F0F7F3; border-radius:14px; padding:18px 22px; margin-bottom:24px;">
+      <div style="width:64px; height:64px; border-radius:50%; background:#2E6B52; display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;">
+        <span id="pdf-total" style="font-size:22px; font-weight:800; color:#fff;"></span>
+        <span style="font-size:9px; color:rgba(255,255,255,0.8);">/70</span>
+      </div>
+      <div>
+        <div style="font-weight:700; font-size:14px;">மொத்த மதிப்பெண்</div>
+        <div style="font-size:12px; color:#5B6051; margin-top:3px;">அதிக மதிப்பெண் உள்ள உறுப்பே மூலகாரணமாக இருக்கலாம்</div>
+      </div>
+    </div>
+
+    <!-- rankings -->
+    <div style="font-weight:700; font-size:13px; color:#2E6B52; margin-bottom:10px; letter-spacing:0.5px;">உறுப்பு பாதிப்பு நிலை</div>
+    <div id="pdf-ranks" style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;"></div>
+
+    <!-- organ scores table -->
+    <div style="font-weight:700; font-size:13px; color:#2E6B52; margin-bottom:10px; letter-spacing:0.5px;">ஒவ்வொரு உறுப்பு மதிப்பெண்</div>
+    <table id="pdf-table" style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#2E6B52; color:#fff;">
+          <th style="padding:9px 14px; text-align:left; border-radius:8px 0 0 0;">உறுப்பு</th>
+          <th style="padding:9px 14px; text-align:center;">மதிப்பெண்</th>
+          <th style="padding:9px 14px; text-align:center; border-radius:0 8px 0 0;">மொத்தத்தில்</th>
+        </tr>
+      </thead>
+      <tbody id="pdf-tbody"></tbody>
+    </table>
+
+    <!-- footer -->
+    <div style="margin-top:32px; padding-top:16px; border-top:1.5px solid #E5E7EB; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="font-weight:700; font-size:13px; color:#2E6B52;">Acupuncturist அரவிந்த்குமார் S</div>
+        <div style="font-size:11px; color:#9CA08D; margin-top:2px;">rootaccu.netlify.app</div>
+      </div>
+      <div style="font-size:10px; color:#C9CDBE; text-align:right;">இந்த அறிக்கை TCM அடிப்படையிலானது.<br>மருத்துவ நிபுணரை அணுகவும்.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
